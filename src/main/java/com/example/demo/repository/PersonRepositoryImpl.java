@@ -11,6 +11,7 @@ public class PersonRepositoryImpl implements PersonRepository {
 	Person sally = new Person(2, "Sally", "Wang");
 	Person chiying = new Person(3, "Chiying", "Wang");
 	Person peter = new Person(4, "Peter", "Wang");
+	Person simon = new Person(3, "Simon", "Wang");
 
 	@Override
 	public Mono<Person> getById(Integer id) {
@@ -19,7 +20,7 @@ public class PersonRepositoryImpl implements PersonRepository {
 
 	@Override
 	public Flux<Person> findAll() {
-		return Flux.just(andy, sally, chiying, peter);
+		return Flux.just(andy, sally, chiying, peter, simon);
 	}
 
 }

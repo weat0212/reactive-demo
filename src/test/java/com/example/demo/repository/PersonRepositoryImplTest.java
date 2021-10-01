@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.util.List;
 
@@ -86,4 +87,46 @@ class PersonRepositoryImplTest {
             });
         });
     }
+
+    @Test
+    void testFindPersonById() {
+        Flux<Person> personFlux = repository.findAll();
+
+        final Integer id = 3;
+
+        Mono<Person> personMono = personFlux.filter( p -> p.getId() == id).next();
+
+        personMono.subscribe(person -> {
+            System.out.println(person.toString());
+        });
+    }
+
+    @Test
+    void testFindPersonByIdNotFound() {
+        Flux<Person> personFlux = repository.findAll();
+
+        final Integer id = 10;
+
+        Mono<Person> personMono = personFlux.filter( p -> p.getId() == id).next();
+
+        personMono.subscribe(person -> {
+            System.out.println(person.toString());
+        });
+    }
+
+    @Test
+    void testFindPersonByIdNotFoundWithException() {
+        Flux<Person> personFlux = repository.findAll();
+
+        final Integer id = 10;
+
+        Mono<Person> personMono = personFlux.filter( p -> p.getId() == id).single();
+
+        personMono.doOnError(throwable -> {
+            System.out.println("Something goes wrong!!");
+        }).onErrorReturn(Person.builder().id(id).build()).subscribe(person -> {
+            System.out.println(person.toString());
+        });
+    }
+
 }
