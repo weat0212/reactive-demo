@@ -14,8 +14,8 @@ public class PersonRepositoryImpl implements PersonRepository {
 	Person simon = new Person(3, "Simon", "Wang");
 
 	@Override
-	public Mono<Person> getById(Integer id) {
-		return Mono.just(andy);
+	public Mono<Person> getById(final Integer id) {
+		return findAll().filter(person -> person.getId().equals(id)).next();
 	}
 
 	@Override
